@@ -49,6 +49,11 @@ abstract class Api implements ApiInterface
     protected $perPage;
 
     /**
+     * @var
+     */
+    protected $headers = array();
+
+    /**
      * Constructor.
      *
      * @param  \Cartalyst\Stripe\ConfigInterface  $client
@@ -153,7 +158,9 @@ abstract class Api implements ApiInterface
         try {
             $parameters = Utility::prepareParameters($parameters);
 
-            $response = $this->getClient($headers)->{$httpMethod}('v1/'.$url, [ 'query' => $parameters ]);
+            $this->headers = $headers;
+            $response = $this->getClient()->{$httpMethod}('v1/'.$url, [ 'query' => $parameters ]);
+            $this->headers = array();
 
             return json_decode((string) $response->getBody(), true);
         } catch (ClientException $e) {
@@ -164,23 +171,21 @@ abstract class Api implements ApiInterface
     /**
      * Returns an Http client instance.
      *
-     * @param array $headers
      * @return Client
      */
-    protected function getClient($headers = [])
+    protected function getClient()
     {
         return new Client([
-            'base_uri' => $this->baseUrl(), 'handler' => $this->createHandler($headers)
+            'base_uri' => $this->baseUrl(), 'handler' => $this->createHandler()
         ]);
     }
 
     /**
      * Create the client handler.
      *
-     * @param array $headers
      * @return HandlerStack
      */
-    protected function createHandler($headers = [])
+    protected function createHandler()
     {
         $stack = HandlerStack::create();
 
@@ -193,16 +198,16 @@ abstract class Api implements ApiInterface
 
             $request = $request->withHeader('Stripe-Version', $config->getApiVersion());
 
+            foreach ($this->headers as $key => $header) {
+                $request = $request->withHeader($key, $header);
+            }
+
             $request = $request->withHeader('User-Agent', 'Cartalyst-Stripe/'.$config->getVersion());
 
             $request = $request->withHeader('Authorization', 'Basic '.base64_encode($config->getApiKey()));
 
             return $request;
         }));
-
-        foreach ($headers as $key => $value) {
-            $stack->push(add_header($key, $value));
-        }
 
         $stack->push(Middleware::retry(function ($retries, RequestInterface $request, ResponseInterface $response = null, TransferException $exception = null) {
             return $retries < 3 && ($exception instanceof ConnectException || ($response && $response->getStatusCode() >= 500));
