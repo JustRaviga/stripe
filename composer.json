@@ -1,5 +1,5 @@
 {
-    "name": "cartalyst/stripe",
+    "name": "internationaldancesupplies/stripe-ids",
     "description": "A comprehensive Stripe API package. (Modified for IDS's purposes)",
     "keywords": [
         "php",
