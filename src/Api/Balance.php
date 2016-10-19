@@ -46,11 +46,12 @@ class Balance extends Api
     /**
      * Lists all transactions
      *
-     * @param  array  $parameters
+     * @param  array $parameters
+     * @param array $headers
      * @return array
      */
-    public function all(array $parameters = [])
+    public function all(array $parameters = [], array $headers = [])
     {
-        return $this->_get('balance/history', $parameters);
+        return $this->_get('balance/history', $parameters, $headers);
     }
 }

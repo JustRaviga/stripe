@@ -88,13 +88,13 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _get($url = null, $parameters = [])
+    public function _get($url = null, $parameters = [], $headers = [])
     {
         if ($perPage = $this->getPerPage()) {
             $parameters['limit'] = $perPage;
         }
 
-        return $this->execute('get', $url, $parameters);
+        return $this->execute('get', $url, $parameters, $headers);
     }
 
     /**
@@ -148,12 +148,12 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function execute($httpMethod, $url, array $parameters = [])
+    public function execute($httpMethod, $url, array $parameters = [], $headers = [])
     {
         try {
             $parameters = Utility::prepareParameters($parameters);
 
-            $response = $this->getClient()->{$httpMethod}('v1/'.$url, [ 'query' => $parameters ]);
+            $response = $this->getClient($headers)->{$httpMethod}('v1/'.$url, [ 'query' => $parameters ]);
 
             return json_decode((string) $response->getBody(), true);
         } catch (ClientException $e) {
@@ -164,21 +164,23 @@ abstract class Api implements ApiInterface
     /**
      * Returns an Http client instance.
      *
-     * @return \GuzzleHttp\Client
+     * @param array $headers
+     * @return Client
      */
-    protected function getClient()
+    protected function getClient($headers = [])
     {
         return new Client([
-            'base_uri' => $this->baseUrl(), 'handler' => $this->createHandler()
+            'base_uri' => $this->baseUrl(), 'handler' => $this->createHandler($headers)
         ]);
     }
 
     /**
      * Create the client handler.
      *
-     * @return \GuzzleHttp\HandlerStack
+     * @param array $headers
+     * @return HandlerStack
      */
-    protected function createHandler()
+    protected function createHandler($headers = [])
     {
         $stack = HandlerStack::create();
 
@@ -197,6 +199,10 @@ abstract class Api implements ApiInterface
 
             return $request;
         }));
+
+        foreach ($headers as $key => $value) {
+            $stack->push(add_header($key, $value));
+        }
 
         $stack->push(Middleware::retry(function ($retries, RequestInterface $request, ResponseInterface $response = null, TransferException $exception = null) {
             return $retries < 3 && ($exception instanceof ConnectException || ($response && $response->getStatusCode() >= 500));
