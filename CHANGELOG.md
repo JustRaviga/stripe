@@ -1,0 +1,169 @@
+# Change Log
+
+This project follows [Semantic Versioning](CONTRIBUTING.md).
+
+## Proposals
+
+We do not give estimated times for completion on `Accepted` Proposals.
+
+- [Accepted](https://github.com/cartalyst/stripe/labels/Accepted)
+- [Rejected](https://github.com/cartalyst/stripe/labels/Rejected)
+
+---
+
+### v2.0.7 - 2016-09-23
+
+`ADDED`
+
+- Method to disable the amount converter.
+
+`UPDATED`
+
+- Stripe Exception to retrieve the error response that Stripe returns.
+
+### v2.0.6 - 2016-07-19
+
+`UPDATED`
+
+- Stripe API version to the latest.
+
+`FIXED`
+
+- Iterator not working as expected when passing parameters.
+- Issue where retrieving all subscriptions were not working as expected.
+- Fix issue with idempotency key.
+
+### v2.0.5 - 2016-06-24
+
+`ADDED`
+
+- Method to verify a connected account.
+- Method to verify a bank account.
+- Various missing endpoints.
+
+`FIXED`
+
+- Create method on the File Uploads endpoint.
+
+`UPDATED`
+
+- Test coverage.
+
+### v2.0.4 - 2016-04-27
+
+`ADDED`
+
+- Guzzle retry middleware.
+
+### v2.0.3 - 2016-02-26
+
+`ADDED`
+
+- Country Specs API.
+- Delete endpoint to the Skus API.
+
+### v2.0.2 - 2016-02-17
+
+`FIXED`
+
+- Fixed exception handler to only handle client exceptions.
+
+### v2.0.1 - 2016-02-10
+
+`FIXED`
+
+- Version constant on Stripe class.
+
+### v2.0.0 - 2016-01-17
+
+`UPDATED`
+
+- Updated to Guzzle 6.
+
+### v1.0.10 - 2016-06-24
+
+`ADDED`
+
+- Method to verify a connected account.
+- Method to verify a bank account.
+- Various missing endpoints.
+
+`FIXED`
+
+- Create method on the File Uploads endpoint.
+
+`UPDATED`
+
+- Test coverage.
+
+### v1.0.9 - 2016-02-26
+
+`ADDED`
+
+- Country Specs API.
+- Delete endpoint to the Skus API.
+
+### v1.0.8 - 2016-02-17
+
+`FIXED`
+
+- Fixed `__call` method to work with Mockery.
+
+### v1.0.7 - 2015-12-12
+
+`FIXED`
+
+- Issue when the rate limit was reached a wrong exception was being thrown.
+
+### v1.0.6 - 2015-10-14
+
+`FIXED`
+
+- Issue where the amount was not being converted properly if passed without decimals! This reverts the previous fix with a better fix.
+
+`ADDED`
+
+- Bank Accounts (ExternalAccounts) API.
+- API tests.
+
+### v1.0.5 - 2015-09-29
+
+`ADDED`
+
+- [Relay](https://stripe.com/relay) endpoints.
+
+### v1.0.4 - 2015-09-18
+
+`FIXED`
+
+- Issue where the `amount` that was not being automatically converted properly.
+
+`ADDED`
+
+- A new `AmountConverter` class that automatically converts the `amount`.
+- A methods to the Stripe class to get and set the Amount Converter class easily.
+
+### v1.0.3 - 2015-07-08
+
+`FIXED`
+
+- Wrong returns on some docblocks.
+- Incorrect coding standards.
+
+### v1.0.2 - 2015-06-30
+
+`ADDED`
+
+- `.gitattributes` and `.travis.yml` file.
+
+### v1.0.1 - 2015-06-03
+
+`ADDED`
+
+- Added new methods to create and update an account and to retrieve all the connected accounts.
+
+### v1.0.0 - 2015-04-02
+
+`INIT`
+
+- Initial release.
