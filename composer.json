@@ -1,6 +1,6 @@
 {
     "name": "cartalyst/stripe",
-    "description": "A comprehensive Stripe API package.",
+    "description": "A comprehensive Stripe API package. (Modified for IDS's purposes)",
     "keywords": [
         "php",
         "cartalyst",
